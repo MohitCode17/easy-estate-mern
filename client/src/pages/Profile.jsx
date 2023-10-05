@@ -11,6 +11,9 @@ import {
   updateUserStart,
   updateUserSuccess,
   updateUserFailure,
+  deleteUserStart,
+  deleteUserSuccess,
+  deleteUserFailure,
 } from "../redux/user/userSlice";
 
 const Profile = () => {
@@ -44,7 +47,7 @@ const Profile = () => {
         setFilePerc(Math.round(progress));
       },
       (error) => {
-        setFileUploadError(error);
+        setFileUploadError(true);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) =>
@@ -84,6 +87,27 @@ const Profile = () => {
       setUpdateSuccess(true);
     } catch (error) {
       dispatch(updateUserFailure(error.message));
+    }
+  };
+
+  // Delete Account Handler
+  const handleDeleteAccount = async () => {
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+
+      if (data.success === false) {
+        dispatch(deleteUserFailure(data.message));
+        return;
+      }
+
+      dispatch(deleteUserSuccess(data));
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
     }
   };
 
@@ -148,7 +172,10 @@ const Profile = () => {
         </button>
       </form>
       <div className="mt-4 flex items-center justify-between">
-        <span className="text-red-600 hover:underline cursor-pointer">
+        <span
+          className="text-red-600 hover:underline cursor-pointer"
+          onClick={handleDeleteAccount}
+        >
           Delete Account
         </span>
         <span className="text-red-600 hover:underline cursor-pointer">
