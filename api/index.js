@@ -3,6 +3,7 @@ import { config } from "dotenv";
 import { connect } from "./db/db.js";
 import userRoutes from "./routes/users.route.js";
 import authRoutes from "./routes/auth.route.js";
+import cookieParser from "cookie-parser";
 
 // dotenv config
 config();
@@ -13,6 +14,7 @@ connect();
 
 // Middlewares
 app.use(express.json());
+app.use(cookieParser());
 
 // Routes
 app.use("/api/user", userRoutes);
