@@ -117,7 +117,7 @@ const Profile = () => {
   // Sign-out Handler Function
   const handleSignOut = async () => {
     try {
-      dispatch(signOutUserSuccess());
+      dispatch(signOutUserStart());
       const res = await fetch("/api/auth/signout");
       const data = await res.json();
 
