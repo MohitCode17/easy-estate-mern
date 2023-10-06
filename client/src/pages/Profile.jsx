@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import {
   getDownloadURL,
   getStorage,
@@ -187,10 +188,16 @@ const Profile = () => {
         />
         <button
           disabled={loading}
-          className="bg-slate-700 text-white p-3 font-bold uppercase rounded-lg"
+          className="bg-slate-700 text-white p-3 font-bold uppercase rounded-lg hover:opacity-95"
         >
           {loading ? "Loading..." : "Update"}
         </button>
+        <Link
+          to={"/create-listing"}
+          className="bg-green-700 text-white p-3 font-bold uppercase rounded-lg text-center hover:opacity-95"
+        >
+          Create Listing
+        </Link>
       </form>
       <div className="mt-4 flex items-center justify-between">
         <span
