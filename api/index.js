@@ -3,6 +3,7 @@ import { config } from "dotenv";
 import { connect } from "./db/db.js";
 import userRoutes from "./routes/users.route.js";
 import authRoutes from "./routes/auth.route.js";
+import listingRoutes from "./routes/listing.route.js";
 import cookieParser from "cookie-parser";
 
 // dotenv config
@@ -19,6 +20,7 @@ app.use(cookieParser());
 // Routes
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/listing", listingRoutes);
 
 // Error Middleware
 app.use((err, req, res, next) => {
