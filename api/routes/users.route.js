@@ -1,6 +1,7 @@
 import express from "express";
 import {
   deleteProfile,
+  getListings,
   test,
   updateUserProfile,
 } from "../controllers/users.controller.js";
@@ -16,5 +17,8 @@ router.post("/update/:id", verifyToken, updateUserProfile);
 
 // ------------ delete profile route ------------
 router.delete("/delete/:id", verifyToken, deleteProfile);
+
+// ------------ get user listing route ------------
+router.get("/listings/:id", verifyToken, getListings);
 
 export default router;
