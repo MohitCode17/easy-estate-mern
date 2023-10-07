@@ -28,6 +28,8 @@ const Profile = () => {
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [userListings, setUserListings] = useState([]);
+  const [showListingsError, setShowListingsError] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -133,6 +135,24 @@ const Profile = () => {
     }
   };
 
+  // Show Listing Function
+  const handleShowListings = async () => {
+    try {
+      setShowListingsError(false);
+      const res = await fetch(`/api/user/listings/${currentUser._id}`);
+      const data = await res.json();
+
+      if (data.success === false) {
+        setShowListingsError(true);
+        return;
+      }
+
+      setUserListings(data);
+    } catch (error) {
+      setShowListingsError(true);
+    }
+  };
+
   return (
     <div className="max-w-lg mx-auto p-3">
       <h2 className="text-center text-2xl font-semibold my-5">Profile</h2>
@@ -217,6 +237,46 @@ const Profile = () => {
       <p className="text-green-700 mt-5">
         {updateSuccess ? "Profile is updated successfully" : ""}
       </p>
+
+      {/* Show Listing */}
+      <button onClick={handleShowListings} className="text-green-700 w-full">
+        Show Listings
+      </button>
+      <p className="text-red-700 mt-5">
+        {showListingsError ? "Error showing listings" : ""}
+      </p>
+      {userListings && userListings.length > 0 && (
+        <div>
+          <h1 className="text-center mt-7 text-2xl font-semibold">
+            Your Listings
+          </h1>
+          {userListings.map((listing) => (
+            <div
+              key={listing._id}
+              className="flex justify-between items-center border rounded-lg p-3 gap-4"
+            >
+              <Link to={`/listing/${listing._id}`}>
+                <img
+                  src={listing.imageUrls[0]}
+                  alt="listing cover"
+                  className="w-16 h-16 object-contain"
+                />
+              </Link>
+              <Link to={`/listing/${listing._id}`}>
+                <p>{listing.name}</p>
+              </Link>
+              <div className="flex flex-col items-center">
+                <button className="text-red-700 uppercase text-sm">
+                  Delete
+                </button>
+                <button className="green-red-700 uppercase text-sm">
+                  Edit
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
