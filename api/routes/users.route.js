@@ -2,6 +2,7 @@ import express from "express";
 import {
   deleteProfile,
   getListings,
+  getUser,
   test,
   updateUserProfile,
 } from "../controllers/users.controller.js";
@@ -20,5 +21,8 @@ router.delete("/delete/:id", verifyToken, deleteProfile);
 
 // ------------ get user listing route ------------
 router.get("/listings/:id", verifyToken, getListings);
+
+// ---------- get user by listing userRef id(who created a listing) ---------
+router.get("/:id", verifyToken, getUser);
 
 export default router;
